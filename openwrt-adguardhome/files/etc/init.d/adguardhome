@@ -1,0 +1,17 @@
+#!/bin/sh /etc/rc.common
+# Copyright (C) 2006-2011 OpenWrt.org
+
+START=50
+STOP=10
+SERVICE_DAEMONIZE=1
+
+NAME=adguardhome
+
+
+start() {	
+        /usr/bin/adguardhome >/tmp/adguardhome.log 2>&1 &
+}
+
+stop() {
+        killall -q -9  adguardhome
+}

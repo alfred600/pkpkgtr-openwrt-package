@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=adguardhome
 PROJECT_NAME:=AdGuardHome
-PKG_VERSION:=v0.98.1
+PKG_VERSION:=v0.99.3
 PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
@@ -70,6 +70,7 @@ PKG_HASH:=skip
 define Build/Prepare
 	mkdir -vp $(UNTAR_DIR)
 	tar -zxvf $(DL_DIR)/$(PKG_SOURCE) -C $(UNTAR_DIR)
+	rm $(DL_DIR)/$(PKG_SOURCE)
 endef
 
 define Build/Configure
@@ -82,6 +83,9 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(UNTAR_DIR)/*/$(PROJECT_NAME) $(1)/usr/bin/$(PKG_NAME)
 	chmod 755 $(1)/usr/bin/$(PKG_NAME)
+	$(INSTALL_DIR) $(1)/etc/init.d
+	$(INSTALL_BIN) ./files/etc/init.d/adguardhome $(1)/etc/init.d/adguardhome
+	chmod +x $(1)/etc/init.d/$(PKG_NAME)
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
